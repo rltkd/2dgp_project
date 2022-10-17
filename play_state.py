@@ -1,28 +1,27 @@
 from pico2d import *
 import game_framework
+
+width, height = 1024, 684
 class Map:
     def __init__(self):
         self.image = load_image('stage.png')
 
     def draw(self):
-        width, height = 1024, 684
         self.image.draw(width//2, height//2)
 
 class Character:
     def __init__(self):
-        self.x, self.y = 400, 90
+        self.x, self.y = 100, 90
         self.frame = 0
-        self.dir = 1
+        self.dir_x, self.dir_y = 0, 0
         self.image = load_image('spritesheet.png')
 
     def update(self):
         self.frame = (self.frame + 1) % 2
-        self.x += self.dir * 1
-        if self.x > 800:
-            self.dir = -1
-            self.x = 800
+        self.x += self.dir_x
+        if self.x > width:
+            self.x = width
         elif self.x < 0:
-            self.dir = 1
             self.x = 0
 
     def draw(self):
@@ -45,6 +44,23 @@ def handle_events():
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_ESCAPE:
                 running = False
+            if event.key == SDLK_RIGHT:
+                character.dir_x += 1
+            elif event.key == SDLK_LEFT:
+                character.dir_x -= 1
+            elif event.key == SDLK_UP:
+                character.dir_y += 1
+            elif event.key == SDLK_DOWN:
+                character.dir_y -= 1
+        elif event.type == SDL_KEYUP:
+            if event.key == SDLK_RIGHT:
+                character.dir_x -= 1
+            elif event.key == SDLK_LEFT:
+                character.dir_x += 1
+            elif event.key == SDLK_UP:
+                character.dir_y -= 1
+            elif event.key == SDLK_DOWN:
+                character.dir_y += 1
 
 def enter():
     global character, map, running
