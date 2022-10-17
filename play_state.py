@@ -11,14 +11,14 @@ class Map:
 
 class Character:
     def __init__(self):
-        self.x, self.y = 100, 90
+        self.x, self.y, self.z = 100, 90, 0
         self.frame = 0
         self.dir_x, self.dir_y = 0, 0
-        self.image = load_image('spritesheet.png')
+        self.image = load_image('character_animaiton.png')
 
     def update(self):
-        self.frame = (self.frame + 1) % 2
-        self.x += self.dir_x
+        self.frame = (self.frame + 1) % 8
+        self.x += self.dir_x*0.3
         if self.x > width:
             self.x = width
         elif self.x < 0:
@@ -29,7 +29,7 @@ class Character:
         #     self.image.clip_draw(self.frame*100, 100, 100, 100, self.x, self.y)
         # else:
         #     self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
-        self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+        self.image.clip_draw(self.frame*100, 100*self.z, 100, 100, self.x, self.y)
 
 character = None
 map = None
@@ -46,8 +46,10 @@ def handle_events():
                 running = False
             if event.key == SDLK_RIGHT:
                 character.dir_x += 1
+                character.z=0
             elif event.key == SDLK_LEFT:
                 character.dir_x -= 1
+                character.z = 1
             elif event.key == SDLK_UP:
                 character.dir_y += 1
             elif event.key == SDLK_DOWN:
