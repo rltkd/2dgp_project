@@ -1,6 +1,5 @@
 from pico2d import *
 import game_framework
-
 width, height = 1024, 684
 class Map:
     def __init__(self):
@@ -19,17 +18,19 @@ class Character:
     def update(self):
         self.frame = (self.frame + 1) % 8
         self.x += self.dir_x*0.3
+        self.y += self.dir_y*0.3
         if self.x > width:
             self.x = width
         elif self.x < 0:
             self.x = 0
-
+        elif self.y > height:
+            self.y = height
+        elif self.y < 0:
+            self.y =0
     def draw(self):
-        # if self.dir == 1:
-        #     self.image.clip_draw(self.frame*100, 100, 100, 100, self.x, self.y)
-        # else:
-        #     self.image.clip_draw(self.frame*100, 0, 100, 100, self.x, self.y)
+
         self.image.clip_draw(self.frame*100, 100*self.z, 100, 100, self.x, self.y)
+
 
 character = None
 map = None
@@ -52,8 +53,10 @@ def handle_events():
                 character.z = 1
             elif event.key == SDLK_UP:
                 character.dir_y += 1
+                character.z = 2
             elif event.key == SDLK_DOWN:
                 character.dir_y -= 1
+                character.dir_z = 3
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:
                 character.dir_x -= 1

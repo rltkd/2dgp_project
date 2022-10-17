@@ -6,15 +6,16 @@ import logo_state
 width, height = 1024, 683
 pico2d.open_canvas(width, height)
 
-state = play_state
+states = [play_state]
 
-state.enter()
+for state in states:
+    state.enter()
     # game main loop code
-while state.running:
-    state.handle_events()
-    state.update()
-    state.draw()
-state.exit()
+    while state.running:
+        state.handle_events()
+        state.update()
+        state.draw()
+    state.exit()
 
    # finalization code
 pico2d.close_canvas()
