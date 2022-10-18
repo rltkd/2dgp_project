@@ -10,15 +10,15 @@ class Map:
 
 class Character:
     def __init__(self):
-        self.x, self.y, self.z = 100, 90, 0
+        self.x, self.y, self.z = 90, 90, 4
         self.frame = 0
         self.dir_x, self.dir_y = 0, 0
-        self.image = load_image('character_animaiton.png')
+        self.image = load_image('character_animation.png')
 
     def update(self):
         self.frame = (self.frame + 1) % 8
-        self.x += self.dir_x*0.3
-        self.y += self.dir_y*0.3
+        self.x += self.dir_x*5
+        self.y += self.dir_y*5
         if self.x > width:
             self.x = width
         elif self.x < 0:
@@ -30,6 +30,7 @@ class Character:
     def draw(self):
 
         self.image.clip_draw(self.frame*100, 100*self.z, 100, 100, self.x, self.y)
+
 
 
 character = None
@@ -46,25 +47,29 @@ def handle_events():
             if event.key == SDLK_ESCAPE:
                 running = False
             if event.key == SDLK_RIGHT:
-                character.dir_x += 1
                 character.z=0
+                character.dir_x += 1
             elif event.key == SDLK_LEFT:
-                character.dir_x -= 1
                 character.z = 1
+                character.dir_x -= 1
             elif event.key == SDLK_UP:
-                character.dir_y += 1
                 character.z = 2
+                character.dir_y += 1
             elif event.key == SDLK_DOWN:
+                character.z = 3
                 character.dir_y -= 1
-                character.dir_z = 3
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:
+                character.z= 4
                 character.dir_x -= 1
             elif event.key == SDLK_LEFT:
+                character.z = 5
                 character.dir_x += 1
             elif event.key == SDLK_UP:
+                character.z = 6
                 character.dir_y -= 1
             elif event.key == SDLK_DOWN:
+                character.z = 7
                 character.dir_y += 1
 
 def enter():
@@ -92,6 +97,7 @@ def draw():
     clear_canvas()
     draw_world()
     update_canvas()
+    delay(0.05)
 
 
 def pause():
