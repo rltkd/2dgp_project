@@ -32,7 +32,7 @@ class Character:
         self.dir_x, self.dir_y = 0, 0
         self.image = load_image('character_animation.png')
         self.sight_image = load_image('sight.png')
-        self.screen_delay = 0
+        self.screen_delay=0
     def update(self):
         global sight
         self.frame = (self.frame + 1) % 8
@@ -88,6 +88,7 @@ def handle_events():
 
             elif event. key == SDLK_1:
                 sight = False
+
         elif event.type == SDL_KEYUP:
             if event.key == SDLK_RIGHT:
                 character.z = 4
