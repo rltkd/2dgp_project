@@ -26,7 +26,7 @@ class Star:
         self.star = False
 
     def update(self):
-        if self.star == True:
+        if self.star:
             if self.state == 'right':
                 self.star_x += 10
                 if self.star_x > width:
@@ -89,7 +89,7 @@ class Character:
 
         self.image.clip_draw(self.frame*100, 100*self.z, 100, 100, self.x, self.y)
 
-
+# z 스프라이트 0 4 right 1 5 left 2 6 up 3 7 down
 def handle_events():
     global sight, state
     events = get_events()
