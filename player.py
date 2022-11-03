@@ -53,7 +53,7 @@ class IDLE:
     @staticmethod
     def enter(self, event):
         print('enter IDLE')
-        self.dir_x = 0
+        self.dir_x = 1
         self.dir_y = 0
         pass
 
@@ -104,7 +104,6 @@ class RUN:
     def do(self):
         self.frame=(self.frame + 1) % 8
         self.x += self.dir_x
-        self.y += self.dir_y
         self.x = clamp(0,self.x, width)
         self.y = clamp(0,self.x, height)
         pass
@@ -126,25 +125,12 @@ next_state = {
 }
 
 class Character:
-    def add_event(self,event):
-        self.q.insert(0, event)
-
-    def handle_event(self,event): # 소년이 스스로 이벤트를 처리할수 있게
-        # event 는 키이벤트, 이것을 내부 rd 등으로 변환
-        if (event.type, event.key) in key_event_table:
-            key_event = key_event_table[(event.type), event.key]
-            self.add_event(key_event) #변환된 내부 이벤트를 큐에 추가
-
-
-
     def __init__(self):
-        self.x, self.y = 50, 120,
-        self.frame = 0
-        self.dir_x, self.dir_y = 0, 0
-        self.image = load_image('character_animation.png')
-        self.sight_image = load_image('sight.png')
-        self.screen_delay = 0
-
+        self.x, self.y = 50, 90
+        self.state=['up', 'down', 'right', 'left']
+        self.frame=0
+        self.dir_x,self.dir_y= 1, 0
+        self.image= load_image('character_animation.png')
         self.q = []
         self.cur_state = IDLE
         self.cur_state.enter(self, None)
@@ -165,5 +151,14 @@ class Character:
 
 
     def draw(self):
-
         self.cur_state.draw(self)
+
+    def add_event(self,event):
+        self.q.insert(0, event)
+
+    def handle_event(self,event): # 소년이 스스로 이벤트를 처리할수 있게
+        # event 는 키이벤트, 이것을 내부 rd 등으로 변환
+        if (event.type, event.key) in key_event_table:
+            key_event = key_event_table[(event.type), event.key]
+            self.add_event(key_event) #변환된 내부 이벤트를 큐에 추가
+

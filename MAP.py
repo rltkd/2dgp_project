@@ -8,3 +8,6 @@ class Map:
     def draw(self):
         self.image.draw(width//2, height//2)
 
+    def update(self):
+        pass
+

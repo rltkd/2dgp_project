@@ -1,5 +1,7 @@
 from pico2d import *
 import game_framework
+import game_world
+
 width, height = 1024, 684
 
 from MAP import Map
@@ -7,6 +9,7 @@ from player import Character
 
 character = None
 map = None
+
 # z 스프라이트 0 4 right 1 5 left 2 6 up 3 7 down
 def handle_events():
     events = get_events()
@@ -22,26 +25,27 @@ def enter():
     global character, map
     character = Character()
     map = Map()
-    # star = STAR()
+    game_world.add_object(map,0)
+    game_world.add_object(character,1)
 
 #게임 종료 - 객체 소멸
 def exit():
-    global character, map
-    del character
-    del map
+    game_world.clear()
 #게임 월드 객체를 업데이트 - 게임 로직
 def update():
-    character.update()
+    for game_object in game_world.all_objects():
+        game_object.update()
+
 def draw_world():
-    map.draw()
-    character.draw()
+    for game_object in game_world.all_objects():
+        game_object.draw()
 
 def draw():
     # 게임 월드 렌더링
     clear_canvas()
     draw_world()
     update_canvas()
-    delay(0.05)
+    # delay(0.05)
 
 
 def pause():
