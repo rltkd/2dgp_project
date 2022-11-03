@@ -53,6 +53,7 @@ class IDLE:
     @staticmethod
     def enter(self, event):
         print('enter IDLE')
+        self.z=0
         pass
 
     @staticmethod
@@ -68,14 +69,7 @@ class IDLE:
 
     @staticmethod
     def draw(self):
-        if self.face=='right':#오른쪽을 바라보는 IDLE
-            self.image.clip_draw(self.frame * 100, 4*100, 100, 100, self.x, self.y)
-        elif self.face == 'left':
-            self.image.clip_draw(self.frame * 100, 5*100, 100, 100, self.x, self.y)
-        elif self.face =='up':
-            self.image.clip_draw(self.frame * 100, 6*100, 100, 100, self.x, self.y)
-        elif self.face == 'down':
-            self.image.clip_draw(self.frame * 100, 7*100, 100, 100, self.x, self.y)
+        self.image.clip_draw(self.frame * 100, (self.idle_z+4)*100, 100, 100, self.x, self.y)
         pass
 
 
@@ -85,19 +79,19 @@ class RUN:
         #self.dir 값을 결정해야 함.
         if event == RD:
             self.dir_x = 1
-            self.face = 'right'
+            # self.face = 'right'
             self.z= 0
         elif event == LD:
             self.dir_x = -1
-            self.face = 'left'
+            # self.face = 'left'
             self.z = 1
         elif event == UD:
             self.dir_y = 1
-            self.face = 'up'
+            # self.face = 'up'
             self.z = 2
         elif event == DD:
             self.dir_y = -1
-            self.face = 'down'
+            # self.face = 'down'
             self.z = 3
         elif event == RU:
             self.dir_x = -1
@@ -128,14 +122,14 @@ class RUN:
     def exit(self):
         print('exit.run')
         #run을 나가서 idle로 갈 때, run의 방향을 알려줄 필요가 있다.
-
+        self.idle_z = self.z
         pass
 
     def do(self):
         self.frame=(self.frame + 1) % 8
-        if self.face == 'right' or self.face == 'left':
+        if self.z <=1:
             self.x +=self.dir_x
-        elif self.face == 'up' or self.face =='down':
+        else:
             self.y +=self.dir_y
         self.x = clamp(0,self.x, width)
         self.y = clamp(0,self.y, height)
@@ -152,7 +146,7 @@ next_state = {
 
 class Character:
     def __init__(self):
-        self.x, self.y,self.z = 50, 90, 0
+        self.x, self.y,self.z,self.idle_z = 50, 90, 0,0
         self.face = ['up', 'down', 'right', 'left']
         self.frame = 0
         self.dir_x, self.dir_y= 1, 0
