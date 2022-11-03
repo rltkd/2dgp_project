@@ -78,41 +78,41 @@ class RUN:
         print('enter run')
         #self.dir 값을 결정해야 함.
         if event == RD:
-            self.dir_x = 1
+            self.dir_x += 1
             # self.face = 'right'
             self.z= 0
         elif event == LD:
-            self.dir_x = -1
+            self.dir_x -= 1
             # self.face = 'left'
             self.z = 1
         elif event == UD:
-            self.dir_y = 1
+            self.dir_y += 1
             # self.face = 'up'
             self.z = 2
         elif event == DD:
-            self.dir_y = -1
+            self.dir_y -=1
             # self.face = 'down'
             self.z = 3
         elif event == RU:
-            self.dir_x = -1
+            self.dir_x -= 1
             if self.dir_y < 0:
                 self.z = 3
             elif self.dir_y > 0:
                 self.z = 2
         elif event == LU:
-            self.dir_x = +1
+            self.dir_x += 1
             if self.dir_y < 0:
                 self.z = 3
             elif self.dir_y > 0:
                 self.z = 2
         elif event == UU:
-            self.dir_y = -1
+            self.dir_y -=1
             if self.dir_x < 0:
                 self.z = 1
             elif self.dir_x > 0:
                 self.z = 0
         elif event == DU:
-            self.dir_y = +1
+            self.dir_y +=1
             if self.dir_x < 0:
                 self.z = 1
             elif self.dir_x > 0:
