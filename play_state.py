@@ -45,7 +45,7 @@ def draw():
     clear_canvas()
     draw_world()
     update_canvas()
-    # delay(0.05)
+    delay(0.05)
 
 
 def pause():

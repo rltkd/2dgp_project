@@ -53,8 +53,6 @@ class IDLE:
     @staticmethod
     def enter(self, event):
         print('enter IDLE')
-        self.dir_x = 1
-        self.dir_y = 0
         pass
 
     @staticmethod
@@ -70,13 +68,13 @@ class IDLE:
 
     @staticmethod
     def draw(self):
-        if self.dir_x == 1:#오른쪽을 바라보는 IDLE
+        if self.face=='right':#오른쪽을 바라보는 IDLE
             self.image.clip_draw(self.frame * 100, 4*100, 100, 100, self.x, self.y)
-        elif self.dir_x == -1:
+        elif self.face == 'left':
             self.image.clip_draw(self.frame * 100, 5*100, 100, 100, self.x, self.y)
-        elif self.dir_y == 1:
+        elif self.face =='up':
             self.image.clip_draw(self.frame * 100, 6*100, 100, 100, self.x, self.y)
-        elif self.dir_y == -1:
+        elif self.face == 'down':
             self.image.clip_draw(self.frame * 100, 7*100, 100, 100, self.x, self.y)
         pass
 
@@ -85,38 +83,66 @@ class RUN:
     def enter(self, event):
         print('enter run')
         #self.dir 값을 결정해야 함.
-        if event == RD: self.dir_x = 1
-        elif event == LD:self.dir_x = -1
-        elif event == RU: self.dir_x = -1
-        elif event == LU: self.dir_x = 1
-        elif event == UU: self.dir_y = -1
-        elif event == UD: self.dir_y = 1
-        elif event == DD: self.dir_y = -1
-        elif event == DU: self.dir_y = +1
-
+        if event == RD:
+            self.dir_x = 1
+            self.face = 'right'
+            self.z= 0
+        elif event == LD:
+            self.dir_x = -1
+            self.face = 'left'
+            self.z = 1
+        elif event == UD:
+            self.dir_y = 1
+            self.face = 'up'
+            self.z = 2
+        elif event == DD:
+            self.dir_y = -1
+            self.face = 'down'
+            self.z = 3
+        elif event == RU:
+            self.dir_x = -1
+            if self.dir_y < 0:
+                self.z = 3
+            elif self.dir_y > 0:
+                self.z = 2
+        elif event == LU:
+            self.dir_x = +1
+            if self.dir_y < 0:
+                self.z = 3
+            elif self.dir_y > 0:
+                self.z = 2
+        elif event == UU:
+            self.dir_y = -1
+            if self.dir_x < 0:
+                self.z = 1
+            elif self.dir_x > 0:
+                self.z = 0
+        elif event == DU:
+            self.dir_y = +1
+            if self.dir_x < 0:
+                self.z = 1
+            elif self.dir_x > 0:
+                self.z = 0
         pass
 
     def exit(self):
-        print('enter.run')
+        print('exit.run')
         #run을 나가서 idle로 갈 때, run의 방향을 알려줄 필요가 있다.
+
         pass
 
     def do(self):
         self.frame=(self.frame + 1) % 8
-        self.x += self.dir_x
+        if self.face == 'right' or self.face == 'left':
+            self.x +=self.dir_x
+        elif self.face == 'up' or self.face =='down':
+            self.y +=self.dir_y
         self.x = clamp(0,self.x, width)
-        self.y = clamp(0,self.x, height)
+        self.y = clamp(0,self.y, height)
         pass
 
     def draw(self):
-        if self.dir_x == 1:
-            self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
-        elif self.dir_x == -1:
-            self.image.clip_draw(self.frame * 100, 100, 100, 100, self.x, self.y)
-        elif self.dir_y == 1:
-            self.image.clip_draw(self.frame * 100, 2*100, 100, 100, self.x, self.y)
-        elif self.dir_y == -1:
-            self.image.clip_draw(self.frame * 100, 3*100, 100, 100, self.x, self.y)
+        self.image.clip_draw(self.frame * 100, self.z*100, 100, 100, self.x, self.y)
         pass
 
 next_state = {
@@ -126,10 +152,10 @@ next_state = {
 
 class Character:
     def __init__(self):
-        self.x, self.y = 50, 90
-        self.state=['up', 'down', 'right', 'left']
-        self.frame=0
-        self.dir_x,self.dir_y= 1, 0
+        self.x, self.y,self.z = 50, 90, 0
+        self.face = ['up', 'down', 'right', 'left']
+        self.frame = 0
+        self.dir_x, self.dir_y= 1, 0
         self.image= load_image('character_animation.png')
         self.q = []
         self.cur_state = IDLE
