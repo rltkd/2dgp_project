@@ -10,4 +10,4 @@ pico2d.open_canvas(width, height)
 
 game_framework.run(play_state)
    # finalization code
-pico2d.close_canvas()()
+pico2d.close_canvas()
