@@ -79,19 +79,19 @@ class RUN:
         #self.dir 값을 결정해야 함.
         if event == RD:
             self.dir_x += 1
-            # self.face = 'right'
+            self.face = 'right'
             self.z= 0
         elif event == LD:
             self.dir_x -= 1
-            # self.face = 'left'
+            self.face = 'left'
             self.z = 1
         elif event == UD:
             self.dir_y += 1
-            # self.face = 'up'
+            self.face = 'up'
             self.z = 2
         elif event == DD:
-            self.dir_y -=1
-            # self.face = 'down'
+            self.dir_y -= 1
+            self.face = 'down'
             self.z = 3
         elif event == RU:
             self.dir_x -= 1
@@ -127,10 +127,10 @@ class RUN:
 
     def do(self):
         self.frame=(self.frame + 1) % 8
-        if self.z <=1:
-            self.x +=self.dir_x
-        else:
-            self.y +=self.dir_y
+        if self.z <=1 or self.z == 4 or self.z ==5:
+            self.x += self.dir_x
+        elif self.z==3 or self.z==2:
+            self.y += self.dir_y
         self.x = clamp(0,self.x, width)
         self.y = clamp(0,self.y, height)
         pass
