@@ -127,9 +127,9 @@ class RUN:
 
     def do(self):
         self.frame=(self.frame + 1) % 8
-        if self.z <=1 or self.z == 4 or self.z ==5:
+        if self.face == 'right' or self.face =='left':
             self.x += self.dir_x
-        elif self.z==3 or self.z==2:
+        elif self.face == 'up' or self.face =='down':
             self.y += self.dir_y
         self.x = clamp(0,self.x, width)
         self.y = clamp(0,self.y, height)
