@@ -11,15 +11,6 @@ character = None
 map = None
 
 # z 스프라이트 0 4 right 1 5 left 2 6 up 3 7 down
-def handle_events():
-    events = get_events()
-    for event in events:
-        if event.type == SDL_QUIT:
-            game_framework.quit()
-        elif (event.type, event.key) == (SDL_KEYDOWN,SDLK_ESCAPE):
-            game_framework.quit()
-        else:
-            character.handle_event(event) #소년한테 이벤트 처리하도록 넘겨준다.
 
 def enter():
     global character, map
@@ -53,6 +44,17 @@ def pause():
 
 def resume():
     pass
+
+def handle_events():
+    events = get_events()
+    for event in events:
+        if event.type == SDL_QUIT:
+            game_framework.quit()
+        elif (event.type, event.key) == (SDL_KEYDOWN,SDLK_ESCAPE):
+            game_framework.quit()
+        else:
+            character.handle_event(event) #소년한테 이벤트 처리하도록 넘겨준다.
+
 def test_self():
     import play_state
 
