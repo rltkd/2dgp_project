@@ -1,6 +1,6 @@
 #layer 0: Background Objects
 #layer 1: foreground objects
-objects = [[],[]]
+objects = [[],[],[]]
 
 
 def add_object(o,depth):

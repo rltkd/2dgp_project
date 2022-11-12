@@ -1,7 +1,10 @@
 from pico2d import *
+from Star import Star
+from sight import Sight
 import game_framework
+import game_world
 width, height = 1024, 684
-sight = True
+blind = True
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -26,130 +29,6 @@ key_event_table = {
     (SDL_KEYUP, SDLK_DOWN): DOWNKEY_UP,
     (SDL_KEYDOWN, SDLK_SPACE): SPACE
 }
-
-# class STAR:
-#     def __init__(self):
-#         self.star_image = load_image('star.png')
-#         self.state=['up', 'down', 'right', 'left']
-#         self.star_x, self.star_y = character.x + 10, character.y
-#         self.state = 'right'
-#         self.star = False
-#
-#     def update(self):
-#         if self.star:
-#             if self.state == 'right':
-#                 self.star_x += 10
-#                 if self.star_x > width:
-#                     self.star = False
-#             elif self.state == 'left':
-#                 self.star_x -= 10
-#                 if self.star_x < 0:
-#                     self.star = False
-#             elif self.state == 'up':
-#                 self.star_y += 10
-#                 if self.star_y > height:
-#                     self.star = False
-#             elif self.state == 'down':
-#                 self.star_y -= 10
-#                 if self.star_y < 0:
-#                     self.star = False
-#
-#     def draw(self):
-#         if self.star:
-#             self.star_image.draw(self.star_x, self.star_y)
-#
-#     def Ab(self, state):
-#         self.state = state
-# class IDLE:
-#     @staticmethod
-#     def enter(self, event):
-#         print('enter IDLE')
-#         self.z=0
-#         pass
-#
-#     @staticmethod
-#     def exit(self):
-#         print('enter exit')
-#         pass
-#
-#     @staticmethod
-#     def do(self):
-#         self.frame = (self.frame +1) % 8
-#         pass
-#
-#
-#     @staticmethod
-#     def draw(self):
-#         self.image.clip_draw(self.frame * 100, (self.idle_z+4)*100, 100, 100, self.x, self.y)
-#         pass
-
-
-# class RUN:
-#     def enter(self, event):
-#         print('enter run')
-#         #self.dir 값을 결정해야 함.
-#         if event == RD:
-#             self.dir_x += 1
-#             self.face = 'right'
-#             self.z= 0
-#         elif event == LD:
-#             self.dir_x -= 1
-#             self.face = 'left'
-#             self.z = 1
-#         elif event == UD:
-#             self.dir_y += 1
-#             self.face = 'up'
-#             self.z = 2
-#         elif event == DD:
-#             self.dir_y -= 1
-#             self.face = 'down'
-#             self.z = 3
-#         elif event == RU:
-#             self.dir_x -= 1
-#             if self.dir_y < 0:
-#                 self.z = 3
-#             elif self.dir_y > 0:
-#                 self.z = 2
-#         elif event == LU:
-#             self.dir_x += 1
-#             if self.dir_y < 0:
-#                 self.z = 3
-#             elif self.dir_y > 0:
-#                 self.z = 2
-#         elif event == UU:
-#             self.dir_y -=1
-#             if self.dir_x < 0:
-#                 self.z = 1
-#             elif self.dir_x > 0:
-#                 self.z = 0
-#         elif event == DU:
-#             self.dir_y +=1
-#             if self.dir_x < 0:
-#                 self.z = 1
-#             elif self.dir_x > 0:
-#                 self.z = 0
-#         pass
-#
-#     def exit(self):
-#         print('exit.run')
-#         #run을 나가서 idle로 갈 때, run의 방향을 알려줄 필요가 있다.
-#         self.idle_z = self.z
-#         pass
-#
-#     def do(self):
-#         self.frame=(self.frame + 1) % 8
-#         if self.face == 'right' or self.face =='left':
-#             self.x += self.dir_x
-#         elif self.face == 'up' or self.face =='down':
-#             self.y += self.dir_y
-#         self.x = clamp(0,self.x, width)
-#         self.y = clamp(0,self.y, height)
-#         pass
-#
-#     def draw(self):
-#         self.image.clip_draw(self.frame * 100, self.z*100, 100, 100, self.x, self.y)
-#         pass
-
 class WalkingState:
     @staticmethod
     def enter(character, event):
@@ -176,6 +55,7 @@ class WalkingState:
     @staticmethod
     def exit(character, event):
         if event == SPACE:
+            print('star')
             character.star()
 
     @staticmethod
@@ -204,9 +84,9 @@ class WalkingState:
             else:
                 # character is idle
                 if character.dir == 1:
-                    character.image.clip_draw(int(character.frame) * 100, 300, 100, 100, character.x, character.y)
+                    character.image.clip_draw(int(character.frame) * 100, 400, 100, 100, character.x, character.y)
                 else:
-                    character.image.clip_draw(int(character.frame) * 100, 200, 100, 100, character.x, character.y)
+                    character.image.clip_draw(int(character.frame) * 100, 500, 100, 100, character.x, character.y)
 
 
 next_state_table = {
@@ -225,7 +105,7 @@ class Character:
             Character.image =load_image('character_animation.png')
         self.frame = 0
         self.dir = 1
-        self.x_velocity, self.y_velocity = 0 ,0
+        self.x_velocity, self.y_velocity = 0, 0
         self.q = []
         self.cur_state = WalkingState
         self.cur_state.enter(self, None)
@@ -237,6 +117,14 @@ class Character:
     def __setstate__(self, state):
         self.__init__()
         self.__dict__.update(state)
+
+    def star(self):
+        print('star')
+        star = Star(self.x, self.y, self.dir * RUN_SPEED_PPS * 10)
+        game_world.add_object(star, 1)
+    def sight(self):
+        sight = Sight(self.x, self.y)
+        game_world.add_object(sight, 2)
     def update(self):
 
         self.cur_state.do(self)
