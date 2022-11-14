@@ -34,28 +34,36 @@ class WalkingState:
     def enter(character, event):
         if event == RIGHTKEY_DOWN:
             character.x_velocity += RUN_SPEED_PPS
+            character.x_dir += 1
         elif event == RIGHTKEY_UP:
             character.x_velocity -= RUN_SPEED_PPS
+            character.x_dir -= 1
         if event == LEFTKEY_DOWN:
             character.x_velocity -= RUN_SPEED_PPS
+            character.x_dir -= 1
         elif event == LEFTKEY_UP:
             character.x_velocity += RUN_SPEED_PPS
+            character.x_dir += 1
 
         if event == UPKEY_DOWN:
             character.y_velocity += RUN_SPEED_PPS
+            character.y_dir += 1
         elif event == UPKEY_UP:
             character.y_velocity -= RUN_SPEED_PPS
+            character.y_dir -= 1
         if event == DOWNKEY_DOWN:
             character.y_velocity -= RUN_SPEED_PPS
+            character.y_dir -= 1
         elif event == DOWNKEY_UP:
             character.y_velocity += RUN_SPEED_PPS
+            character.y_dir += 1
 
 
 
     @staticmethod
     def exit(character, event):
+        character.face_dir = character.dir
         if event == SPACE:
-            print('star')
             character.star()
 
     @staticmethod
@@ -68,25 +76,40 @@ class WalkingState:
 
     @staticmethod
     def draw(character):
-        if character.x_velocity > 0:
+        if character.x_dir>0:
             character.image.clip_draw(int(character.frame) * 100, 0, 100, 100, character.x, character.y)
-            character.dir = 1
-        elif character.x_velocity < 0:
+            character.dir = 4
+        elif character.x_dir <0:
             character.image.clip_draw(int(character.frame) * 100, 100, 100, 100, character.x, character.y)
-            character.dir = -1
-        else:
-            # if character x_velocity == 0
-            if character.y_velocity > 0 or character.y_velocity < 0:
-                if character.dir == 1:
-                    character.image.clip_draw(int(character.frame) * 100, 200, 100, 100, character.x, character.y)
-                else:
-                    character.image.clip_draw(int(character.frame) * 100, 300, 100, 100, character.x, character.y)
-            else:
-                # character is idle
-                if character.dir == 1:
-                    character.image.clip_draw(int(character.frame) * 100, 400, 100, 100, character.x, character.y)
-                else:
-                    character.image.clip_draw(int(character.frame) * 100, 500, 100, 100, character.x, character.y)
+            character.dir = 5
+        elif character.x_dir ==0 and character.y_dir >0:
+            character.image.clip_draw(int(character.frame) * 100, 200, 100, 100, character.x, character.y)
+            character.dir = 6
+        elif character.x_dir ==0 and character.y_dir <0:
+            character.image.clip_draw(int(character.frame) * 100, 300, 100, 100, character.x, character.y)
+            character.dir = 7
+        elif character.x_dir ==0 and character.y_dir ==0:
+            character.image.clip_draw(int(character.frame) * 100, (character.face_dir)*100, 100, 100, character.x, character.y)
+
+        # if character.x_velocity > 0:
+        #     character.image.clip_draw(int(character.frame) * 100, 0, 100, 100, character.x, character.y)
+        #     character.x_dir = 1
+        # elif character.x_velocity < 0:
+        #     character.image.clip_draw(int(character.frame) * 100, 100, 100, 100, character.x, character.y)
+        #     character.x_dir = -1
+        # else:
+        #     # if character x_velocity == 0
+        #     if character.y_velocity > 0 or character.y_velocity < 0:
+        #         if character.dir == 1:
+        #             character.image.clip_draw(int(character.frame) * 100, 200, 100, 100, character.x, character.y)
+        #         else:
+        #             character.image.clip_draw(int(character.frame) * 100, 300, 100, 100, character.x, character.y)
+        #     else:
+        #         # character is idle
+        #         if character.dir == 1:
+        #             character.image.clip_draw(int(character.frame) * 100, 400, 100, 100, character.x, character.y)
+        #         else:
+        #             character.image.clip_draw(int(character.frame) * 100, 500, 100, 100, character.x, character.y)
 
 
 next_state_table = {
@@ -100,28 +123,30 @@ class Character:
     image = None
     def __init__(self):
         self.x, self.y = 50, 90
-        # self.face = ['up', 'down', 'right', 'left']
         if Character.image is None:
             Character.image =load_image('character_animation.png')
         self.frame = 0
         self.dir = 1
+        self.face_dir =4
+        self.x_dir, self.y_dir = 0, 0
         self.x_velocity, self.y_velocity = 0, 0
         self.q = []
         self.cur_state = WalkingState
         self.cur_state.enter(self, None)
 
-    def __getstate__(self):
-        state = {'x': self.x, 'y': self.y, 'dir': self.dir, 'cur_state': self.cur_state}
-        return state
+    # def __getstate__(self):
+    #     state = {'x': self.x, 'y': self.y, 'dir': self.dir, 'cur_state': self.cur_state}
+    #     return state
 
     def __setstate__(self, state):
         self.__init__()
         self.__dict__.update(state)
 
     def star(self):
-        print('star')
-        star = Star(self.x, self.y, self.dir * RUN_SPEED_PPS * 10)
+        print(' star2')
+        star = Star(self.x, self.y, self.dir * 1)
         game_world.add_object(star, 1)
+
     def sight(self):
         sight = Sight(self.x, self.y)
         game_world.add_object(sight, 2)
