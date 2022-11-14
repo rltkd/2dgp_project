@@ -65,6 +65,8 @@ class WalkingState:
         character.face_dir = character.dir
         if event == SPACE:
             character.star()
+        elif event == SDLK_a:
+            character.sight()
 
     @staticmethod
     def do(character):
@@ -114,21 +116,21 @@ class Character:
         self.cur_state = WalkingState
         self.cur_state.enter(self, None)
 
-    # def __getstate__(self):
-    #     state = {'x': self.x, 'y': self.y, 'dir': self.dir, 'cur_state': self.cur_state}
-    #     return state
+    def __getstate__(self):
+        state = {'x': self.x, 'y': self.y, 'dir': self.dir, 'cur_state': self.cur_state}
+        return state
 
     def __setstate__(self, state):
         self.__init__()
         self.__dict__.update(state)
 
     def star(self):
-        print(' star2')
         # star = Star.star_diretion(self.dir)
         star = Star(self.x, self.y, self.dir * 0.5,self.face_dir)
         game_world.add_object(star, 1)
 
     def sight(self):
+        print('sight')
         sight = Sight(self.x, self.y)
         game_world.add_object(sight, 2)
     def update(self):
@@ -142,6 +144,7 @@ class Character:
 
     def draw(self):
         self.cur_state.draw(self)
+
 
     def add_event(self,event):
         self.q.insert(0, event)
