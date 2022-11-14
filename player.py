@@ -91,26 +91,6 @@ class WalkingState:
         elif character.x_dir ==0 and character.y_dir ==0:
             character.image.clip_draw(int(character.frame) * 100, abs((character.face_dir))*100, 100, 100, character.x, character.y)
 
-        # if character.x_velocity > 0:
-        #     character.image.clip_draw(int(character.frame) * 100, 0, 100, 100, character.x, character.y)
-        #     character.x_dir = 1
-        # elif character.x_velocity < 0:
-        #     character.image.clip_draw(int(character.frame) * 100, 100, 100, 100, character.x, character.y)
-        #     character.x_dir = -1
-        # else:
-        #     # if character x_velocity == 0
-        #     if character.y_velocity > 0 or character.y_velocity < 0:
-        #         if character.dir == 1:
-        #             character.image.clip_draw(int(character.frame) * 100, 200, 100, 100, character.x, character.y)
-        #         else:
-        #             character.image.clip_draw(int(character.frame) * 100, 300, 100, 100, character.x, character.y)
-        #     else:
-        #         # character is idle
-        #         if character.dir == 1:
-        #             character.image.clip_draw(int(character.frame) * 100, 400, 100, 100, character.x, character.y)
-        #         else:
-        #             character.image.clip_draw(int(character.frame) * 100, 500, 100, 100, character.x, character.y)
-
 
 next_state_table = {
     WalkingState: {RIGHTKEY_UP: WalkingState, LEFTKEY_UP: WalkingState, RIGHTKEY_DOWN: WalkingState, LEFTKEY_DOWN: WalkingState,
@@ -144,7 +124,8 @@ class Character:
 
     def star(self):
         print(' star2')
-        star = Star(self.x, self.y, self.face_dir * 0.5)
+        # star = Star.star_diretion(self.dir)
+        star = Star(self.x, self.y, self.dir * 0.5,self.face_dir)
         game_world.add_object(star, 1)
 
     def sight(self):
