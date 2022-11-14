@@ -89,7 +89,7 @@ class WalkingState:
             character.image.clip_draw(int(character.frame) * 100, 300, 100, 100, character.x, character.y)
             character.dir = 7
         elif character.x_dir ==0 and character.y_dir ==0:
-            character.image.clip_draw(int(character.frame) * 100, (character.face_dir)*100, 100, 100, character.x, character.y)
+            character.image.clip_draw(int(character.frame) * 100, abs((character.face_dir))*100, 100, 100, character.x, character.y)
 
         # if character.x_velocity > 0:
         #     character.image.clip_draw(int(character.frame) * 100, 0, 100, 100, character.x, character.y)
@@ -129,7 +129,7 @@ class Character:
         self.dir = 1
         self.face_dir =4
         self.x_dir, self.y_dir = 0, 0
-        self.x_velocity, self.y_velocity = 0, 0
+        self.x_velocity, self.y_velocity =0, 0
         self.q = []
         self.cur_state = WalkingState
         self.cur_state.enter(self, None)
@@ -144,7 +144,7 @@ class Character:
 
     def star(self):
         print(' star2')
-        star = Star(self.x, self.y, self.dir * 1)
+        star = Star(self.x, self.y, self.face_dir * 0.5)
         game_world.add_object(star, 1)
 
     def sight(self):
