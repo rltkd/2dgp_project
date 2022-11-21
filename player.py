@@ -16,7 +16,7 @@ TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
 FRAMES_PER_ACTION = 8
 
-RIGHTKEY_DOWN, LEFTKEY_DOWN, UPKEY_DOWN, DOWNKEY_DOWN, RIGHTKEY_UP, LEFTKEY_UP, UPKEY_UP, DOWNKEY_UP, SPACE = range(9)
+RIGHTKEY_DOWN, LEFTKEY_DOWN, UPKEY_DOWN, DOWNKEY_DOWN, RIGHTKEY_UP, LEFTKEY_UP, UPKEY_UP, DOWNKEY_UP, SPACE, A = range(10)
 
 key_event_table = {
     (SDL_KEYDOWN, SDLK_RIGHT): RIGHTKEY_DOWN,
@@ -27,7 +27,8 @@ key_event_table = {
     (SDL_KEYUP, SDLK_LEFT): LEFTKEY_UP,
     (SDL_KEYUP, SDLK_UP): UPKEY_UP,
     (SDL_KEYUP, SDLK_DOWN): DOWNKEY_UP,
-    (SDL_KEYDOWN, SDLK_SPACE): SPACE
+    (SDL_KEYDOWN, SDLK_SPACE): SPACE,
+    (SDL_KEYDOWN,SDLK_a):A
 }
 class WalkingState:
     @staticmethod
@@ -65,7 +66,7 @@ class WalkingState:
         character.face_dir = character.dir
         if event == SPACE:
             character.star()
-        elif event == SDLK_a:
+        elif event == A:
             character.sight()
 
     @staticmethod
@@ -97,7 +98,7 @@ class WalkingState:
 next_state_table = {
     WalkingState: {RIGHTKEY_UP: WalkingState, LEFTKEY_UP: WalkingState, RIGHTKEY_DOWN: WalkingState, LEFTKEY_DOWN: WalkingState,
                 UPKEY_UP: WalkingState, UPKEY_DOWN: WalkingState, DOWNKEY_UP: WalkingState, DOWNKEY_DOWN: WalkingState,
-                SPACE: WalkingState}
+                SPACE: WalkingState, A:WalkingState}
 }
 
 
@@ -109,6 +110,7 @@ class Character:
             Character.image =load_image('character_animation.png')
         self.frame = 0
         self.dir = 1
+        self.screen_delay=0
         self.face_dir =4
         self.x_dir, self.y_dir = 0, 0
         self.x_velocity, self.y_velocity =0, 0
@@ -130,8 +132,7 @@ class Character:
         game_world.add_object(star, 1)
 
     def sight(self):
-        print('sight')
-        sight = Sight(self.x, self.y)
+        sight = Sight(self.x, self.y,self.x_dir,self.y_dir)
         game_world.add_object(sight, 2)
     def update(self):
 
