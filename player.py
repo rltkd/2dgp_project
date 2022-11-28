@@ -131,9 +131,9 @@ class Character:
         star = Star(self.x, self.y, self.dir * 0.5,self.face_dir)
         game_world.add_object(star, 1)
 
-    def sight(self):
-        sight = Sight(self.x, self.y,self.x_dir,self.y_dir)
-        game_world.add_object(sight, 2)
+    # def sight(self):
+    #     sight = Sight(self)
+    #     game_world.add_object(sight, 2)
     def update(self):
 
         self.cur_state.do(self)

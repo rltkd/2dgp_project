@@ -2,6 +2,8 @@ from pico2d import *
 import game_world
 import game_framework
 
+import server
+
 width , height = 1024, 684
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -13,15 +15,29 @@ RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 player = None
 
 class Sight:
-    image = None
-    def __init__(self, x=  width//2 , y = height//2,x_velocity=0,y_velocity=0):
-        if Sight.image == None:
-            Sight.image = load_image('sight.png')
-        self.x, self.y,self.x_velocity, self.y_velocity = x, y,x_velocity,y_velocity
+    def __init__(self):
+        Sight.image = load_image('sight.png')
+        self.canvas_width = get_canvas_width()
+        self.canvas_height = get_canvas_height()
+        self.w = self.image.w
+        self.h = self.image.h
 
     def draw(self):
-        self.image.draw(self.x, self.y-90)
+        # fill here
+        self.image.clip_draw_to_origin(self.window_left, self.window_bottom,
+                                       self.canvas_width, self.canvas_height,
+                                       0, 0)
+        pass
 
     def update(self):
-        self.x += self.x_velocity
-        # self.y += self.y_velocity
+        # fill heres
+        self.window_left = clamp(0,
+                                 int(server.character.x) - self.canvas_width // 2,
+                                 self.w - self.canvas_width - 1)
+        self.window_bottom = clamp(0,
+                                   int(server.character.y) - self.canvas_height // 2,
+                                   self.h - self.canvas_height - 1)
+        pass
+
+    def handle_event(self):
+        pass

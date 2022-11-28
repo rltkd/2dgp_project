@@ -6,18 +6,18 @@ width, height = 1024, 684
 
 from MAP import Map
 from player import Character
+from sight import Sight
 
-character = None
-map = None
-
+import server
 # z 스프라이트 0 4 right 1 5 left 2 6 up 3 7 down
 
 def enter():
-    global character, map
-    character = Character()
-    map = Map()
-    game_world.add_object(map,0)
-    game_world.add_object(character,1)
+    server.character = Character()
+    server.map = Map()
+    game_world.add_object(server.map,0)
+    game_world.add_object(server.character,1)
+    server.sight = Sight()
+    game_world.add_object(server.sight,2)
 
 #게임 종료 - 객체 소멸
 def exit():
@@ -53,7 +53,7 @@ def handle_events():
         elif (event.type, event.key) == (SDL_KEYDOWN,SDLK_ESCAPE):
             game_framework.quit()
         else:
-            character.handle_event(event) #소년한테 이벤트 처리하도록 넘겨준다.
+            server.character.handle_event(event) #소년한테 이벤트 처리하도록 넘겨준다.
 
 def test_self():
     import play_state
