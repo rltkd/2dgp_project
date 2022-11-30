@@ -4,7 +4,7 @@ import logo_state
 import game_framework
 # state = logo_state #모듈을 변수로 취급
 
-width, height = 1024, 684
+width, height = 1000, 800
 pico2d.open_canvas(width, height)
 
 

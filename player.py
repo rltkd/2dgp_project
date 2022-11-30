@@ -66,8 +66,6 @@ class WalkingState:
         character.face_dir = character.dir
         if event == SPACE:
             character.star()
-        elif event == A:
-            character.sight()
 
     @staticmethod
     def do(character):

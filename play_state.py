@@ -2,7 +2,7 @@ from pico2d import *
 import game_framework
 import game_world
 
-width, height = 1024, 684
+width, height = 1000, 1000
 
 from MAP import Map
 from player import Character
@@ -17,7 +17,8 @@ def enter():
     game_world.add_object(server.map,0)
     game_world.add_object(server.character,1)
     server.sight = Sight()
-    game_world.add_object(server.sight,2)
+    if server.sight == True:
+        game_world.add_object(server.sight,2)
 
 #게임 종료 - 객체 소멸
 def exit():
