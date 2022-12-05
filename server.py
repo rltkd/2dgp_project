@@ -1,6 +1,4 @@
 character = None
-map = None
+map = []
 sight = None
-soldier = None
-soldier1 = None
-soldeir2 = None
+soldier = []

@@ -38,6 +38,9 @@ class Star:
     # def star_diretion(self, face_dir=4):
     #     self.star_dir = face_dir
 
+    def get_bb(self):
+        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
+
     def handle_collision(self, other, grou):
         # fill here
         game_world.remove_object(self)
