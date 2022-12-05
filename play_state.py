@@ -2,20 +2,23 @@ from pico2d import *
 import game_framework
 import game_world
 
-width, height = 1000, 1000
+width, height = 960,780
 
-from MAP import Map
+from MAP import Block
 from player import Character
 from sight import Sight
+from solider import Solider
 
 import server
 # z 스프라이트 0 4 right 1 5 left 2 6 up 3 7 down
 
 def enter():
     server.character = Character()
-    server.map = Map()
+    server.map = Block(server.character.x,server.character.y)
     game_world.add_object(server.map,0)
     game_world.add_object(server.character,1)
+    server.soldier = Solider(200,500)
+    game_world.add_object(server.soldier,1)
     server.sight = Sight()
     if server.sight == True:
         game_world.add_object(server.sight,2)
@@ -55,6 +58,19 @@ def handle_events():
             game_framework.quit()
         else:
             server.character.handle_event(event) #소년한테 이벤트 처리하도록 넘겨준다.
+
+
+def collide(a, b):
+    # fill here
+    left_a, bottom_a, right_a, top_a = a.get_bb()
+    left_b, bottom_b, right_b, top_b = b.get_bb()
+
+    if left_a > right_b: return False
+    if right_a < left_b: return False
+    if top_a < bottom_b: return False
+    if bottom_a > top_b: return False
+
+    return True
 
 def test_self():
     import play_state

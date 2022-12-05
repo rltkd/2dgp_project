@@ -37,3 +37,7 @@ class Star:
             game_world.remove_object(self)
     # def star_diretion(self, face_dir=4):
     #     self.star_dir = face_dir
+
+    def handle_collision(self, other, grou):
+        # fill here
+        game_world.remove_object(self)

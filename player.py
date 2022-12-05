@@ -3,7 +3,7 @@ from Star import Star
 from sight import Sight
 import game_framework
 import game_world
-width, height = 1024, 684
+width, height = 960,780
 blind = True
 
 PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
@@ -153,4 +153,5 @@ class Character:
         if (event.type, event.key) in key_event_table:
             key_event = key_event_table[(event.type), event.key]
             self.add_event(key_event) #변환된 내부 이벤트를 큐에 추가
-
+    def handle_collision(self, other, group):
+        pass
