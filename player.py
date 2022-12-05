@@ -224,13 +224,17 @@ next_state_table = {
 
 class Character:
     image = None
+    sound = None
     def __init__(self):
         self.x, self.y = 100, 30
         if Character.image is None:
             Character.image =load_image('character_animation.png')
+        if Character.sound is None:
+            Character.sound =load_wav('sound.wav')
+            Character.sound.set_volume(250)
         self.frame = 0
         self.dir = 1
-        self.star_count = 0
+        self.star_count = 3
         self.face_dir = 4
         self.x_dir, self.y_dir = 0, 0
         self.go = 1
@@ -302,4 +306,5 @@ class Character:
             self.star_count= 0
 
         if group == 'character:solider':
+            self.sound.play()
             self.x, self.y =100, 30

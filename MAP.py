@@ -8,7 +8,7 @@ cols =13
 map_data = [
 
             [1, 2, 1, 0, 0, 5, 0, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1],
-            [1, 0, 1, 1, 0, 1, 0, 1, 0, 4, 0, 0, 0, 1, 0, 1, 1],
+            [1, 0, 1, 1, 0, 1, 0, 1, 0, 4, 0, 0, 6, 1, 0, 1, 1],
             [1, 0, 1, 0, 0, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 1, 1],
             [1, 0, 1, 1, 6, 1, 1, 0, 4, 1, 0, 1, 0, 1, 0, 1, 1],
             [4, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 0, 0, 1, 0, 1, 1],
@@ -24,9 +24,15 @@ map_data = [
             ]
 class Wall:
     image = None
+    sound = None
     def __init__(self,y,x):
         if Wall.image == None:
             Wall.image = load_image('block1.png')
+
+        if Wall.sound == None:
+            Wall.sound = load_wav('sound1.wav')
+            Wall.sound.set_volume(200)
+
         self.x, self.y = (x * 60)+ 30 , (y * 60) + 30
         self.bc = 2
 
@@ -44,6 +50,7 @@ class Wall:
         return self.x - 30, self.y - 30, self.x + 30, self.y + 30
     def handle_collision(self,other,group):
          if group == 'star:block':
+             self.sound.play()
              self.bc -= 1
 
 class Empty:
