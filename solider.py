@@ -27,6 +27,7 @@ class Solider:
         if self.image == None:
               self.image = load_image('solider.png')
         self.x, self.y = x, y
+        self.x_int = self.x
         self.x_dir = 1
         self.speed = 0
         self.timer = 1.0 # change direction every 1 sec when wandering
@@ -38,13 +39,12 @@ class Solider:
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
         if self.x_dir == 1:
             self.x += RUN_SPEED_PPS * game_framework.frame_time
-            if self.x >= 500:
+            if self.x >= self.x_int + 200:
                 self.x_dir = -1
         elif self.x_dir == -1:
             self.x -= RUN_SPEED_PPS * game_framework.frame_time
-            if self.x <= 0:
+            if self.x <= self.x_int - 100:
                 self.x_dir = 1
-        self.x = clamp(0, self.x, 500)
 
     def draw(self):
         if self.x_dir == 1:

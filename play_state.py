@@ -9,6 +9,7 @@ from player import Character
 from sight import Sight
 from solider import Solider
 
+soldier_xy= []
 import server
 # z 스프라이트 0 4 right 1 5 left 2 6 up 3 7 down
 
@@ -17,7 +18,8 @@ def enter():
     server.map = Block(server.character.x,server.character.y)
     game_world.add_object(server.map,0)
     game_world.add_object(server.character,1)
-    server.soldier = Solider(200,500)
+    # server.soldier = Solider(200,500)
+    # server.soldier1 = Soldier(400, 600)
     game_world.add_object(server.soldier,1)
     server.sight = Sight()
     if server.sight == True:
