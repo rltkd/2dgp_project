@@ -13,6 +13,7 @@ def add_objects(ol,depth):
 def remove_object(o):
     for layer in objects:
         if o in layer:
+            remove_collision_object(o)
             layer.remove(o)
             del o
             return
@@ -28,6 +29,7 @@ def clear():
         del o
     for layer in objects:
         layer.clear()
+    collision_group.clear()
 
 
 def add_collision_pairs(a, b, group):

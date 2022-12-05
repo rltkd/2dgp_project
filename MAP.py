@@ -1,4 +1,5 @@
 from pico2d import *
+import game_world
 width, height = 960,780
 tilesize = 60
 rows= 16
@@ -27,17 +28,24 @@ class Wall:
         if Wall.image == None:
             Wall.image = load_image('block1.png')
         self.x, self.y = (x * 60)+ 30 , (y * 60) + 30
+        self.bc = 2
 
     def draw(self):
         self.image.draw(self.x, self.y)
         draw_rectangle(*self.get_bb())
     def update(self):
+        if self.bc <= 0:
+            try:
+                game_world.remove_object(self)
+            except:
+                pass
         pass
     def get_bb(self):
         return self.x - 30, self.y - 30, self.x + 30, self.y + 30
-    def handle_collision(self,other,massage):
-        #점프에 대한 충돌 처리
-        pass
+    def handle_collision(self,other,group):
+         if group == 'star:block':
+             self.bc -= 1
+
 class Empty:
 
     def __init__(self,y,x):
@@ -50,40 +58,5 @@ class Empty:
         pass
     def get_bb(self,x,y):
         return self.x - 30, self.y - 30, self.x + 30, self.y + 30
-    def handle_collision(self,other,massage):
-        #점프에 대한 충돌 처리
+    def handle_collision(self,other,group):
         pass
-# class Background:
-#     def __init__(self):
-#         self.block_image = load_image('block1.png')
-#         self.road_image = load_image('block2.png')
-#         for cols in range(len(map_data)):
-#             for rows in range(len(map_data[cols])):
-#                 pass
-#                 if map_data[cols][rows] == 1:
-#                     self.x, self.y = cols*16, rows*13
-#                     # self.tile = 1
-#         #
-#         #         if map_data[cols][rows] ==0:
-#         #             self.x, self. y = cols, rows
-#         #             self.tile = 0
-#     def draw(self):
-#         self.block_image.draw(self.x, self.y)
-#         # for y in range(0,rows):
-#         #     for x in range(0,cols):
-#         #         if(map_data[cols][rows] == 1 ):
-#         #             self.block_image.draw(x,y)
-#         #             # draw_rectangle(*self.get_bb(x,y) )
-#         #         elif (map_data[cols][rows] == 0 ):
-#         #             self.road_image.draw(x,y)
-#         #             # draw_rectangle(*self.get_bb(x, y))
-#
-#
-#     def update(self):
-#         pass
-#     def get_bb(self,x,y):
-#         return self.x - 30, self.y - 30, self.x + 30, self.y + 30
-#     def handle_collision(self,other,massage):
-#         #점프에 대한 충돌 처리
-#         pass
-

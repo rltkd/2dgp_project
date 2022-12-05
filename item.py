@@ -5,12 +5,28 @@ import load_state
 import game_framework
 from pico2d import *
 
-image = None
 class Item:
-    def __init__(self):
-        if self.image ==None:
+    image = None
+    def __init__(self,x, y):
+        if Item.image == None:
             self.image = load_image('item.png')
-            self.x, y = 0 , 0
+            self.x, self.y = x, y
 
-    def __draw__(self):
-        self.image.draw(x,y)
+    def draw(self):
+        self.image.draw(self.x, self.y)
+        draw_rectangle(*self.get_bb())
+
+    def update(self):
+        pass
+    def get_bb(self):
+        return self.x -25 , self.y - 25, self.x + 25, self.y + 25
+
+    def handle_event(self, event):
+        pass
+
+    def handle_collision(self, other, group):
+        if group == 'character:item':
+            try:
+                game_world.remove_object(self)
+            except:
+                pass

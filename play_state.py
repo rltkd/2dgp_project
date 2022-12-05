@@ -6,10 +6,12 @@ import os
 from pico2d import *
 import game_framework
 import game_world
+import item
 from player import Character
 import solider
 import server
 import MAP
+import sight
 import load_state
 def gen_map():
     for cols in range(13):
@@ -19,19 +21,27 @@ def gen_map():
 
             if MAP.map_data[cols][rows] == 2:
                 server.character = Character()
+            if MAP.map_data[cols][rows] == 4:
+                empty = MAP.Empty(cols, rows)
+                server.item.append(item.Item(*empty.get_pos()))
             if MAP.map_data[cols][rows] ==5:
                 empty = MAP.Empty(cols, rows)
                 server.soldier.append(solider.Solider(*empty.get_pos()))
 def enter():
     gen_map()
+    server.sight = sight.Sight()
     # server.character = Character()
     game_world.add_objects(server.map, 1)
     game_world.add_objects(server.soldier, 1)
     game_world.add_object(server.character, 1)
+    game_world.add_objects(server.item,1)
+    game_world.add_object(server.sight,2)
 
+    game_world.add_collision_pairs(server.character, server.item, 'character:item')
     game_world.add_collision_pairs(server.character, server.soldier, 'character:solider')
     game_world.add_collision_pairs(server.character, server.map, 'character:block')
     game_world.add_collision_pairs(server.soldier, server.map, 'solider:block')
+    game_world.add_collision_pairs(None, server.map, 'star:block')
 
 def exit():
     game_world.clear()
