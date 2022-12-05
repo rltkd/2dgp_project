@@ -13,12 +13,14 @@ import play_state
 
 from player import Character
 from solider import Solider
+import MAP
 
 
 menu = None
 
 def enter():
     global menu
+    play_state.enter()
     menu = load_image('menu.png')
     hide_cursor()
     hide_lattice()
@@ -36,8 +38,10 @@ def resume():
 
 def create_new_world():
     server.character = Character()
+    game_world.add_object(server.map,0)
     game_world.add_object(server.character, 1)
     game_world.add_collision_pairs(server.character, None, 'character:solider')
+
 
     # fill here
     with open('soldier_data.json', 'r') as f:
@@ -65,6 +69,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
                 game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_n:
+            server.map.clear()
             create_new_world()
             game_framework.change_state(play_state)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_l:

@@ -6,12 +6,32 @@ import os
 from pico2d import *
 import game_framework
 import game_world
+from player import Character
+import solider
 import server
-
+import MAP
 import load_state
+def gen_map():
+    for cols in range(13):
+        for rows in range(16):
+            if MAP.map_data[cols][rows] == 1:
+                server.map.append(MAP.Wall(cols, rows))
 
+            if MAP.map_data[cols][rows] == 2:
+                server.character = Character()
+            if MAP.map_data[cols][rows] ==5:
+                empty = MAP.Empty(cols, rows)
+                server.soldier.append(solider.Solider(*empty.get_pos()))
 def enter():
-    pass
+    gen_map()
+    # server.character = Character()
+    game_world.add_objects(server.map, 1)
+    game_world.add_objects(server.soldier, 1)
+    game_world.add_object(server.character, 1)
+
+    game_world.add_collision_pairs(server.character, server.soldier, 'character:solider')
+    game_world.add_collision_pairs(server.character, server.map, 'character:block')
+    game_world.add_collision_pairs(server.soldier, server.map, 'solider:block')
 
 def exit():
     game_world.clear()
@@ -30,7 +50,8 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.change_state(load_state)
+            game_framework.quit()
+            # game_framework.change_state(load_state)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
             game_world.save()
         else:
@@ -43,7 +64,7 @@ def update():
 
     for a, b, group in game_world.all_collision_pairs():
         if collide(a, b):
-            print('COLLISION ', group)
+            # print('COLLISION ', group)
             a.handle_collision(b, group)
             b.handle_collision(a, group)
 
