@@ -20,26 +20,23 @@ class Sight:
         self.canvas_height = get_canvas_height()
         self.w = self.image.w
         self.h = self.image.h
-
+        self.draw_sight = True
+        self.timer = 0.6
     def draw(self):
         # fill here
-        self.image.clip_draw_to_origin(self.window_left, self.window_bottom,
-                                       self.canvas_width, self.canvas_height,
-                                       0, 0)
-        pass
+        if  self.draw_sight:
+            self.image.draw(server.character.x, server.character.y-90)
+        else:
+            pass
+
 
     def update(self):
-        # fill heres
-        self.window_left = clamp(0,
-                                 int(server.character.x) - self.canvas_width // 2,
-                                 self.w - self.canvas_width - 1)
-        self.window_bottom = clamp(0,
-                                   int(server.character.y) - self.canvas_height // 2,
-                                   self.h - self.canvas_height - 1)
+        if not self.draw_sight:
+            self.timer -= game_framework.frame_time
+            if self.timer <= 0:
+                self.timer = 0.6
+                self.draw_sight = True
         pass
 
     def handle_event(self):
-        events = get_events()
-        for event in events:
-            if event.type == SDLK_a:
-                return True
+        pass

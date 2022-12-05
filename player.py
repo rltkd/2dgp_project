@@ -2,11 +2,12 @@ from pico2d import *
 
 import play_state
 from Star import Star
-from sight import Sight
 import game_framework
 import game_world
+import server
 width, height = 960,780
 blind = True
+
 #
 # PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
 # RUN_SPEED_KMPH = 20.0  # Km / Hour
@@ -184,8 +185,12 @@ class WalkingState:
     @staticmethod
     def exit(character, event):
         character.face_dir = character.dir
-        if event == SPACE:
-            character.star()
+        if character.star_count < 3:
+            if event == SPACE:
+                character.star()
+                character.star_count += 1
+        if event == A:
+            server.sight.draw_sight= False
     @staticmethod
     def do(character):
         character.frame = (character.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
@@ -225,7 +230,7 @@ class Character:
             Character.image =load_image('character_animation.png')
         self.frame = 0
         self.dir = 1
-        self.screen_delay = 0
+        self.star_count = 0
         self.face_dir = 4
         self.x_dir, self.y_dir = 0, 0
         self.go = 1
@@ -245,6 +250,7 @@ class Character:
     def star(self):
         # star = Star.star_diretion(self.dir)
         star = Star(self.x, self.y, self.dir * 0.5,self.face_dir)
+        game_world.add_collision_pairs(star, None, 'star:block')
         game_world.add_object(star, 1)
 
     # def sight(self):
@@ -291,3 +297,9 @@ class Character:
             elif self.y > other.y:  # 왼
                 self.y_dir = 0
                 self.y -= 0.1
+
+        if group == 'character:item':
+            self.star_count= 0
+
+        if group == 'character:solider':
+            self.x, self.y =100, 30

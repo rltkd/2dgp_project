@@ -17,7 +17,7 @@ class Star:
         if Star.image == None:
             Star.image = load_image('star.png')
         self.x, self.y, self.velocity,self.star_dir = x, y, velocity, dir
-
+        self.count = 1
     def draw(self):
         self.image.draw(self.x, self.y)
 
@@ -41,6 +41,10 @@ class Star:
     def get_bb(self):
         return self.x - 10, self.y - 10, self.x + 10, self.y + 10
 
-    def handle_collision(self, other, grou):
-        # fill here
-        game_world.remove_object(self)
+    def handle_collision(self, other, group):
+        if group =='star:block':
+
+            try:
+                game_world.remove_object(self)
+            except:
+                pass
