@@ -24,7 +24,7 @@ class Sight:
         self.timer = 0.6
     def draw(self):
         # fill here
-        if  self.draw_sight:
+        if not self.draw_sight:
             self.image.draw(server.character.x, server.character.y-90)
         else:
             pass
