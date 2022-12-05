@@ -144,7 +144,9 @@ class Character:
     def draw(self):
         self.cur_state.draw(self)
 
-
+    def get_bb(self):
+        # fill here
+        return self.x - 50, self.y - 50, self.x + 50, self.y + 50
     def add_event(self,event):
         self.q.insert(0, event)
 

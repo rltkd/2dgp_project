@@ -40,26 +40,22 @@ def create_new_world():
     game_world.add_collision_pairs(server.character, None, 'character:solider')
 
     # fill here
-    with open('zombie_data.json', 'r') as f:
-        zombie_data_list =json.load(f)
+    with open('soldier_data.json', 'r') as f:
+        zombie_data_list = json.load(f)
         for data in zombie_data_list:
-            zombie = Zombie(data['name'],data['x'],data['y'], data['size'])
-            game_world.add_object(zombie,1)
-            game_world.add_collision_pairs(None,zombie,'boy:zombie')
+            solider = Solider(data['x'],data['y'])
+            game_world.add_object(solider,1)
+            game_world.add_collision_pairs(None,solider,'character:solider')
 
 
 
-
-
-
-
-def load_saved_world():
-    # fill here
-    game_world.load()
-    for o in game_world.all_objects():
-        if isinstance(o,Boy):
-            server.boy = o
-    pass
+# def load_saved_world():
+#     # fill here
+#     game_world.load()
+#     for o in game_world.all_objects():
+#         if isinstance(o,Boy):
+#             server.boy = o
+#     pass
 
 def handle_events():
     events = get_events()
@@ -72,7 +68,7 @@ def handle_events():
             create_new_world()
             game_framework.change_state(play_state)
         elif event.type == SDL_KEYDOWN and event.key == SDLK_l:
-            load_saved_world()
+            # load_saved_world()
             game_framework.change_state(play_state)
 
 def update():
