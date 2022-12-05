@@ -60,3 +60,15 @@ class Empty:
         return self.x - 30, self.y - 30, self.x + 30, self.y + 30
     def handle_collision(self,other,group):
         pass
+
+class Background:
+    def __init__(self):
+        self.image = load_image('background_grass.png')
+        self.x = width//2
+        self.y = height//2
+
+
+    def draw(self):
+        self.image.draw(self.x,self.y)
+    def update(self):
+        pass

@@ -29,8 +29,10 @@ def gen_map():
                 server.soldier.append(solider.Solider(*empty.get_pos()))
 def enter():
     gen_map()
+    background = MAP.Background()
     server.sight = sight.Sight()
     # server.character = Character()
+    game_world.add_object(background, 0)
     game_world.add_objects(server.map, 1)
     game_world.add_objects(server.soldier, 1)
     game_world.add_object(server.character, 1)
