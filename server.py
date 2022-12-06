@@ -4,3 +4,4 @@ sight = None
 soldier = []
 item = []
 star = None
+flag = None

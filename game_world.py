@@ -68,22 +68,3 @@ def remove_collision_object(o):
             pairs[1].remove(o)
 
 
-
-
-
-
-
-def save():
-    # fill here
-    game = [objects,collision_group]
-    with open('game.sav','wb') as f:
-        pickle.dump(game, f)
-    pass
-
-def load():
-    # fill here
-    global objects,collision_group
-    with open('game.sav','rb') as f:
-        game = pickle.load(f)
-        objects,collision_group =game[0],game[1]
-    pass

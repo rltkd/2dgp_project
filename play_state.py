@@ -2,6 +2,8 @@ import random
 import json
 import os
 
+import flag
+import menu_state
 from pico2d import *
 import game_framework
 import game_world
@@ -11,7 +13,7 @@ import solider
 import server
 import MAP
 import sight
-import load_state
+from flag import Flag
 def gen_map():
     for cols in range(13):
         for rows in range(16):
@@ -20,6 +22,8 @@ def gen_map():
 
             if MAP.map_data[cols][rows] == 2:
                 server.character = Character()
+            if MAP.map_data[cols][rows] == 3:
+                server.flag = Flag()
             if MAP.map_data[cols][rows] == 4:
                 empty = MAP.Empty(cols, rows)
                 server.item.append(item.Star_Item(*empty.get_pos()))
@@ -33,22 +37,28 @@ def enter():
     gen_map()
     background = MAP.Background()
     server.sight = sight.Sight()
+    server.flag = flag.Flag()
     # server.character = Character()
     game_world.add_object(background, 0)
     game_world.add_objects(server.map, 1)
     game_world.add_objects(server.soldier, 1)
     game_world.add_object(server.character, 1)
+    game_world.add_object(server.flag, 1)
     game_world.add_objects(server.item,1)
     game_world.add_object(server.sight,2)
 
     game_world.add_collision_pairs(server.character, server.item, 'character:star_item')
     game_world.add_collision_pairs(server.character, server.item, 'character:sight_item')
+    game_world.add_collision_pairs(server.character, server.flag, 'character:flag')
     game_world.add_collision_pairs(server.character, server.soldier, 'character:solider')
     game_world.add_collision_pairs(server.character, server.map, 'character:block')
     game_world.add_collision_pairs(server.soldier, server.map, 'solider:block')
     game_world.add_collision_pairs(None, server.map, 'star:block')
 
 def exit():
+    server.map.clear()
+    server.soldier.clear()
+    server.item.clear()
     game_world.clear()
 
 def pause():
@@ -65,8 +75,7 @@ def handle_events():
         if event.type == SDL_QUIT:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            game_framework.quit()
-            # game_framework.change_state(load_state)
+            game_framework.change_state(menu_state)
         else:
             server.character.handle_event(event)
 
@@ -80,8 +89,6 @@ def update():
             # print('COLLISION ', group)
             a.handle_collision(b, group)
             b.handle_collision(a, group)
-
-
 
 
 def draw():

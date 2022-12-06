@@ -1,7 +1,6 @@
 import game_world
 
 import play_state
-import load_state
 import game_framework
 from pico2d import *
 
@@ -35,7 +34,6 @@ class Star_Item:
 import game_world
 
 import play_state
-import load_state
 import game_framework
 from pico2d import *
 
@@ -64,3 +62,4 @@ class Sight_Item:
                 game_world.remove_object(self)
             except:
                 pass
+
