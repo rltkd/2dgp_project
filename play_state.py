@@ -1,6 +1,5 @@
 import random
 import json
-import pickle
 import os
 
 from pico2d import *
@@ -23,10 +22,13 @@ def gen_map():
                 server.character = Character()
             if MAP.map_data[cols][rows] == 4:
                 empty = MAP.Empty(cols, rows)
-                server.item.append(item.Item(*empty.get_pos()))
+                server.item.append(item.Star_Item(*empty.get_pos()))
             if MAP.map_data[cols][rows] ==5:
                 empty = MAP.Empty(cols, rows)
                 server.soldier.append(solider.Solider(*empty.get_pos()))
+            if MAP.map_data[cols][rows] == 6:
+                empty = MAP.Empty(cols, rows)
+                server.item.append(item.Sight_Item(*empty.get_pos()))
 def enter():
     gen_map()
     background = MAP.Background()
@@ -39,7 +41,8 @@ def enter():
     game_world.add_objects(server.item,1)
     game_world.add_object(server.sight,2)
 
-    game_world.add_collision_pairs(server.character, server.item, 'character:item')
+    game_world.add_collision_pairs(server.character, server.item, 'character:star_item')
+    game_world.add_collision_pairs(server.character, server.item, 'character:sight_item')
     game_world.add_collision_pairs(server.character, server.soldier, 'character:solider')
     game_world.add_collision_pairs(server.character, server.map, 'character:block')
     game_world.add_collision_pairs(server.soldier, server.map, 'solider:block')
@@ -64,8 +67,6 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
             # game_framework.change_state(load_state)
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_s:
-            game_world.save()
         else:
             server.character.handle_event(event)
 

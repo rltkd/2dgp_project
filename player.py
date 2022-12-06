@@ -189,8 +189,9 @@ class WalkingState:
             if event == SPACE:
                 character.star()
                 character.star_count += 1
-        if event == A:
+        if character.sight_count == 1 and event == A:
             server.sight.draw_sight= False
+            character.sight_count = 0
     @staticmethod
     def do(character):
         character.frame = (character.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % FRAMES_PER_ACTION
@@ -235,6 +236,7 @@ class Character:
         self.frame = 0
         self.dir = 1
         self.star_count = 3
+        self.sight_count = 0
         self.face_dir = 4
         self.x_dir, self.y_dir = 0, 0
         self.go = 1
@@ -302,8 +304,11 @@ class Character:
                 self.y_dir = 0
                 self.y -= 0.1
 
-        if group == 'character:item':
+        if group == 'character:star_item':
             self.star_count= 0
+
+        if group == 'character:sight_item':
+            self.sight_count = 1
 
         if group == 'character:solider':
             self.sound.play()
