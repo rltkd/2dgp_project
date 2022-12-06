@@ -51,7 +51,7 @@ class Solider:
             self.image.clip_draw(int(self.frame) * 50, 50, 50, 50, self.x, self.y)
         elif self.x_dir == -1:
             self.image.clip_draw(int(self.frame) * 50, 100, 50, 50, self.x, self.y)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
 
     def get_bb(self):

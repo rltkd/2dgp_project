@@ -38,7 +38,6 @@ def enter():
     background = MAP.Background()
     server.sight = sight.Sight()
     server.flag = flag.Flag()
-    # server.character = Character()
     game_world.add_object(background, 0)
     game_world.add_objects(server.map, 1)
     game_world.add_objects(server.soldier, 1)

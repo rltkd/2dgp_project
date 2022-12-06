@@ -274,11 +274,11 @@ class Character:
 
     def draw(self):
         self.cur_state.draw(self)
-        draw_rectangle(*self.get_bb())
+        # draw_rectangle(*self.get_bb())
 
     def get_bb(self):
         # fill here
-        return self.x - 12, self.y - 15, self.x + 12, self.y + 15
+        return self.x - 10, self.y - 10, self.x + 10, self.y + 10
     def add_event(self,event):
         self.q.insert(0, event)
 
@@ -289,21 +289,20 @@ class Character:
             self.add_event(key_event) #변환된 내부 이벤트를 큐에 추가
     def handle_collision(self, other, group):
         if group == 'character:block':
-            if self.x < other.x: #오
-                self.x_dir = 0
-                self.x -= 0.1
-            elif self.x > other.x: #왼
-                self.x_dir = 0
-                self.x += 0.1
-
-            if self.y < other.y:  # 아래
-                self.y_dir = 0
-                self.y += 0.1
-
-            elif self.y > other.y:  # 왼
-                self.y_dir = 0
-                self.y -= 0.1
-
+            # if self.x_dir>=0 and self.y_dir>0:
+            #     self.x -=1
+            #     self.y -=1
+            # elif self.x_dir<0 and self.y_dir>0:
+            #     self.x +=1
+            #     self.y -=1
+            # elif self.x_dir>0 and self.y_dir<0:
+            #     self.x -=1
+            #     self.y +=1
+            # elif self.x_dir < 0 and self.y_dir < 0:
+            #     self.x += 1
+            #     self.y += 1
+            self.x, self.y = 100, 30
+            server.sight.draw_sight=False
         if group == 'character:star_item':
             self.star_count= 0
 
